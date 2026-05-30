@@ -1,4 +1,4 @@
-# Computational Learning Theory (CoLT)
+# Computational Learning Theory
 
 Academic repository containing rigorous mathematical proofs, theoretical analytical frameworks, and problem sets for the **Computational Learning Theory** course at the National and Kapodistrian University of Athens (NKUA).
 
