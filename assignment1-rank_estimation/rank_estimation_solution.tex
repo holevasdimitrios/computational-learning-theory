@@ -1,0 +1,112 @@
+\documentclass[12pt]{article}
+
+\newcommand{\en}{\selectlanguage{english}}
+\newcommand{\gr}{\selectlanguage{greek}}
+
+% Useful packages
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{tabularray}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{csquotes}
+\usepackage{enumitem}
+\usepackage{mathtools} % Για το \coloneqq, \DeclarePairedDelimiter, κ.λπ.
+\usepackage[a4paper,top=2cm,bottom=2cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage[english,main=greek]{babel}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\pgfplotsset{compat=newest}
+
+\definecolor{col_bg}{HTML}{FFFFFF} 
+\definecolor{col_txt}{HTML}{000000}
+\pagecolor{col_bg}
+\color{col_txt}
+
+
+\begin{document}
+
+\begin{table}[ht]
+    \begin{tblr}{
+      @{}X[l,valign=b]X[c,valign=b]X[r,valign=b]@{}
+    }
+
+        % First line, course info
+        \hline
+        \SetCell[c=2]{l}{Υπολογιστική Θεωρία Μηχανικής μάθησης} & & {2024-25} \\ 
+        \hline
+        {} & {} & {} \\
+
+        % Title
+        \SetCell[c=3]{c}{ \Large \textbf{Θεωρητικές ασκήσεις} } \\
+        {} & {} & {} \\
+        
+        % Name Surname, RN
+        \hline
+        \SetCell[c=3]{c}{\textbf{Χολέβας Δημήτριος}} \\
+        \hline
+    \end{tblr}
+\end{table}
+
+
+\section*{1η Θεωρητική άσκηση (Εκτίμηση Κατάταξης)}
+
+Αρχικά, αυτό που έχουμε να κάνουμε είναι να ορίσουμε $\text{$rank$}(x)$ ως τη θέση του $x$ στη φθίνουσα ταξινόμηση της λίστας. Στην ουσία θα ισχύει πως το μέγιστο στοιχείο έχει $rank$ $1$, το δεύτερο μέγιστο $rank$ $2$, κ.ο.κ. Ακολουθούμε τα παρακάτω βήματα:
+
+\begin{enumerate}
+  \item Λαμβάνουμε τυχαία ένα δείγμα μεγέθους $m$ από τη λίστα $x_1, \dots, x_n$, επιλέγοντας στοιχεία με επαναλήψεις (δηλαδή με αντικατάσταση).
+  \item Ταξινομούμε τα δείγματα κατά φθίνουσα σειρά, ώστε τα μεγαλύτερα να έρχονται πρώτα.
+  \item Εντοπίζουμε το στοιχείο που βρίσκεται στη θέση $\left\lfloor \frac{k m}{n} \right\rfloor$ στη ταξινομημένη υπολίστα και το επιστρέφουμε ως εκτίμηση.
+\end{enumerate}
+\subsection*{Ανάλυση Σφάλματος}
+
+Αξιοποιούμε την ιδιότητα ότι η εμπειρική κατανομή που προκύπτει από ένα τυχαίο δείγμα προσεγγίζει την πραγματική κατανομή του πληθυσμού. Για να ποσοτικοποιήσουμε αυτή την απόκλιση, χρησιμοποιούμε την ανισότητα \textbf{$Dvoretzky–Kiefer–Wolfowitz (DKW)$}. Σύμφωνα με αυτήν, αν πάρουμε $m$ ανεξάρτητα δείγματα $X_1, \dots, X_m$ από κατανομή με συνάρτηση κατανομής $F$, τότε η εμπειρική κατανομή $F_m$ ικανοποιεί:
+
+\[
+\Pr\left[\sup_{x} |F_m(x) - F(x)| > \varepsilon\right] \leq 2 e^{-2 m \varepsilon^2}
+\]
+
+Αυτό μας εξασφαλίζει ότι η μέγιστη κατακόρυφη απόκλιση μεταξύ $F_m(x)$ και $F(x)$ είναι μικρή με πιθανότητα τουλάχιστον $1 - \delta$.
+
+Η συνάρτηση $F(x)$ εκφράζει το ποσοστό των στοιχείων της αρχικής λίστας που είναι μικρότερα ή ίσα από $x$. Επομένως, η θέση $k$ αντιστοιχεί περίπου στο ποσοστό $k/n$ ως προς την πραγματική κατανομή. Αντίστοιχα, στο δείγμα μεγέθους $m$, η θέση $k \cdot m / n$ αποτελεί μια φυσική εκτίμηση αυτής της ποσοστιαίας μονάδας.
+
+Στόχος μας είναι να εγγυηθούμε ότι το στοιχείο που επιλέγουμε από το δείγμα έχει κατάταξη που προσεγγίζει το $k$ στην αρχική λίστα. Στην ουσία θέλουμε να ισχύει το εξής:
+
+\[
+\left| \frac{\text{$rank$}(x)}{n} - \frac{k}{n} \right| \leq \varepsilon \cdot \frac{k}{n}
+\Rightarrow
+\left| \text{$rank$}(x) - k \right| \leq \varepsilon k
+\]
+
+Με αυτόν τον τρόπο σιγουρεύουμε ότι η κατάταξη του εκτιμώμενου στοιχείου βρίσκεται εντός του διαστήματος $[(1 - \varepsilon)k,\ (1 + \varepsilon)k]$ με υψηλή πιθανότητα.
+\subsection*{Υπολογίζουμε το μέγεθος του δείγματος $m$}
+
+Από την $DKW$, έχουμε:
+
+\[
+\Pr\left[\sup_{x} |F_m(x) - F(x)| \leq \varepsilon\right] \geq 1 - \delta
+\Rightarrow
+2 e^{-2 m \varepsilon^2} \leq \delta
+\Rightarrow
+m \geq \frac{1}{2 \varepsilon^2} \log \left(\frac{2}{\delta}\right)
+\]
+Με βάση το παραπάνω, παρατηρούμε πως αν επιλέξουμε:
+
+\[
+m = O\left(\frac{1}{\varepsilon^2} \log \frac{1}{\delta} \right)
+\]
+
+τότε με πιθανότητα τουλάχιστον $1 - \delta$, θα μας επιστραφεί ένα $x$ τέτοιο ώστε να ισχύει
+\[
+(1 - \varepsilon)k \leq \text{$rank$}(x) \leq (1 + \varepsilon)k
+\]
+
+\end{document}
