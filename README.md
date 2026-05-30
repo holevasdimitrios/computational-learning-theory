@@ -5,8 +5,8 @@ Academic repository containing rigorous mathematical proofs, theoretical analyti
 ## Repository Structure
 The repository is organized into dedicated topic directories, each containing the analytical problem statement, the LaTeX source code, and the compiled publication-ready PDF:
 
-* `assignment-1-rank_estimation/` - Rank estimation bounds & Dvoretzky-Kiefer-Wolfowitz (DKW) inequality applications.
-* `assignment-2-query_counting/` - Population estimation and sampling via query models.
+* `assignment1-rank_estimation/` - Rank estimation bounds & Dvoretzky-Kiefer-Wolfowitz (DKW) inequality applications.
+* `assignment2-query_counting/` - Population estimation and sampling via query models.
 
 ## Core Theoretical Focus
 * **PAC Learning Framework:** Sample complexity analysis, generalization thresholds, and agnostic settings.
