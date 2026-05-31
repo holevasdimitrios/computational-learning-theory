@@ -1,0 +1,145 @@
+\documentclass[12pt]{article}
+
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{csquotes}
+\usepackage{enumitem}
+\usepackage{mathtools} 
+\usepackage[margin=2cm]{geometry}
+\usepackage[english,main=greek]{babel}
+\usepackage{epstopdf-base}
+\usepackage{grffile} 
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\pgfplotsset{compat=newest}
+
+\definecolor{col_bg}{HTML}{FFFFFF} 
+\definecolor{col_txt}{HTML}{000000}
+\pagecolor{col_bg}
+\color{col_txt}
+
+\begin{document}
+
+\noindent
+\begin{minipage}[c]{0.5\linewidth}
+    \hbox{\includegraphics[height=1.8cm]{ΕΚΠΑ.png}}
+\end{minipage}%
+\begin{minipage}[c]{0.6\linewidth}
+    \begin{flushright}
+        \textbf{\large Τμήμα Πληροφορικής και} \\
+        \textbf{\large Τηλεπικοινωνιών}
+    \end{flushright}
+\end{minipage}
+\hspace*{0.2cm}
+
+\vspace*{0.6em}
+
+\rule{\linewidth}{0.3mm}
+
+\begin{center}
+    \textbf{\Large [Κ17] Υπολογιστική Θεωρία Μηχανικής Μάθησης} \\
+    \vspace*{0.2em}
+    \large Θεωρητικές Ασκήσεις
+\end{center}
+\vspace*{0.4em}
+
+\noindent
+\hspace*{0.4cm}{\large \textbf{Ονοματεπώνυμο:} Χολέβας Δημήτριος} \hfill {\large \textbf{Ακαδημαϊκό Έτος:} 2024-25}\hspace*{0.4cm}
+
+\vspace*{0.6em}
+\rule{\linewidth}{0.3mm}
+\vspace*{0.2em}
+
+\begin{center}
+    \textbf{\Large 5η Θεωρητική Άσκηση} \\
+    \vspace*{0.3em}
+    \textbf{\large (Εκμάθηση από 2 Πηγές Δειγμάτων)}
+\end{center}
+\vspace*{0.0em}
+
+\subsection*{Ερώτημα α}
+
+Υποθέτουμε ότι η υπόθεση $H$ είναι $PAC\ learnable$ στο κλασικό μοντέλο, δηλαδή έχουμε πρόσβαση σε δείγματα από την κατανομή $D$. Θέλουμε να δείξουμε ότι τότε είναι $PAC\ learnable$ και στο μοντέλο με 2 πηγές δειγματοληψίας, από τις $D^+$ και $D^-$.
+
+Ορίζουμε:
+\[
+X^+ = \{x \in X : f(x) = +1\}, \quad X^- = \{x \in X : f(x) = -1\}
+\]
+και:
+\[
+D^+(A) = \frac{D(A)}{D(X^+)} \quad \text{για κάθε } A \subseteq X^+, \quad D^-(A) = \frac{D(A)}{D(X^-)} \quad \text{για κάθε } A \subseteq X^-
+\]
+Ορίζουμε:
+\[
+p^+ = D(X^+), \quad p^- = D(X^-) = 1 - p^+
+\]
+Χρησιμοποιούμε τις δύο πηγές για να κατασκευάσουμε ένα δείγμα από την $D$, ακολουθώντας τα παρακάτω βήματα:
+
+\begin{enumerate}
+  \item Με πιθανότητα $p^+$, δειγματίζουμε ένα στοιχείο $x$ από την κατανομή $D^+$.
+  \item Με πιθανότητα $p^-$, δειγματίζουμε ένα στοιχείο $x$ από την κατανομή $D^-$.
+\end{enumerate}
+
+Με αυτόν τον τρόπο, κατασκευάζουμε νέα τυχαία μεταβλητή $x$ με κατανομή:
+\[
+\Pr[x \in A] = p^+ \cdot D^+(A) + p^- \cdot D^-(A) = D(A)
+\]
+Άρα η σύνθεση των δύο πηγών μάς δίνει ένα δείγμα από την $D$. Εφόσον η $H$ είναι $PAC\ learnable$ από την $D$, μπορούμε να εφαρμόσουμε τον υπάρχοντα $PAC\ learner$ πάνω σε αυτό το σύνθετο δείγμα.
+
+\textbf{Συμπέρασμα:} Από τα παραπάνω προκύπτει ότι, αν μια κλάση υποθέσεων $H$ είναι $PAC\ learnable$ στο τυπικό μοντέλο με μία πηγή παραδειγμάτων (από την $D$), τότε παραμένει $PAC\ learnable$ και στο εναλλακτικό μοντέλο με δύο ξεχωριστές πηγές, $D^+$ και $D^-$, αφού μπορούμε να ανακατασκευάσουμε την $D$ με τυχαίο συνδυασμό τους.
+
+\vspace{1em}
+\subsection*{Ερώτημα β}
+
+Υποθέτουμε ότι η κλάση υποθέσεων $H$ είναι $PAC\ learnable$ στο μοντέλο με δύο πηγές παραδειγμάτων, δηλαδή έχουμε πρόσβαση σε $m^+$ δείγματα από την $D^+$ και $m^-$ δείγματα από την $D^-$. Θέλουμε να δείξουμε ότι τότε η $H$ είναι $PAC\ learnable$ και στο τυπικό μοντέλο μιας πηγής παραδειγμάτων, δηλαδή όταν τα δεδομένα προέρχονται από την κατανομή $D$.
+
+Γνωρίζουμε ότι οι σταθερές συναρτήσεις $h_+(x) \equiv +1$ και $h_-(x) \equiv -1$ ανήκουν στην $H$, και άρα μπορούμε να χρησιμοποιήσουμε πάντα κάποια υπόθεση, ακόμη και σε ακραίες περιπτώσεις.
+
+Ακολουθούμε τα εξής βήματα:
+
+\begin{enumerate}
+  \item Έστω ότι έχουμε ένα δείγμα:
+  \[
+  S = \{(x_1, f(x_1)), \dots, (x_m, f(x_m))\}
+  \]
+  με $m$ παραδείγματα από την κοινή κατανομή $D$.
+
+  \item Διαχωρίζουμε το δείγμα $S$ σε δύο υποσύνολα, ανάλογα με την ετικέτα κάθε παραδείγματος:
+  \[
+  S^+ = \{x_i \in S \mid f(x_i) = +1\}, \quad S^- = \{x_i \in S \mid f(x_i) = -1\}
+  \]
+  Έτσι, δημιουργούμε ένα υποσύνολο $S^+$ δειγμάτων από την $D^+$ και ένα υποσύνολο $S^-$ δειγμάτων από την $D^-$.
+
+  \item Επειδή η $H$ είναι $PAC\ learnable$ στο μοντέλο δύο πηγών, μπορούμε να εφαρμόσουμε τον $learner$ της $H$ στα $S^+$ και $S^-$, ώστε να βρούμε υπόθεση $h \in H$ που με πιθανότητα τουλάχιστον $1 - \delta$ ικανοποιεί:
+  \[
+  \Pr_{x \sim D^+}[h(x) \neq +1] \leq \varepsilon, \quad
+  \Pr_{x \sim D^-}[h(x) \neq -1] \leq \varepsilon
+  \]
+
+  \item Τότε, το συνολικό σφάλμα της υπόθεσης $h$ ως προς την αρχική κατανομή $D$ υπολογίζεται με τον νόμο της ολικής πιθανότητας:
+  \[
+  \Pr_{x \sim D}[h(x) \neq f(x)] = D(X^+) \cdot \Pr_{x \sim D^+}[h(x) \neq +1] + D(X^-) \cdot \Pr_{x \sim D^-}[h(x) \neq -1]
+  \]
+  Κάθε όρος δεξιά είναι μικρότερος ή ίσος από $\varepsilon$, άρα συνολικά:
+  \[
+  \Pr_{x \sim D}[h(x) \neq f(x)] \leq \varepsilon (D(X^+) + D(X^-)) = \varepsilon \cdot 1 = \varepsilon
+  \]
+\end{enumerate}
+
+\textbf{Συμπέρασμα:} Εφόσον μπορούμε να κατασκευάσουμε μία υπόθεση $h \in H$ με σφάλμα μικρότερο ή ίσο από $\varepsilon$ ως προς την $D$, χρησιμοποιώντας έναν $learner$ από το μοντέλο δύο πηγών, καταλήγουμε ότι η $H$ είναι $PAC\ learnable$ και στο τυπικό μοντέλο μίας πηγής παραδειγμάτων.
+
+\vspace{1em}
+\textbf{Σημείωση:} Οι ποσότητες $D(X^+), D(X^-)$ είναι απλώς πιθανότητες, άρα παίρνουν τιμές στο διάστημα $[0,1]$ και ικανοποιούν $D(X^+) + D(X^-) = 1$. Δεν σχετίζονται καθόλου με το $\varepsilon$, ούτε απαιτείται να είναι μικρότερες του $\varepsilon$. Χρησιμοποιούνται απλώς ως βάρη στο συνολικό σφάλμα.
+
+\end{document}
