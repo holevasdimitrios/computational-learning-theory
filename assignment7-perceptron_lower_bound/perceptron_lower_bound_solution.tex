@@ -1,0 +1,155 @@
+\documentclass[12pt]{article}
+
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{csquotes}
+\usepackage{enumitem}
+\usepackage{mathtools} 
+\usepackage[margin=2cm]{geometry}
+\usepackage[english,main=greek]{babel}
+\usepackage{epstopdf-base}
+\usepackage{grffile} 
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\pgfplotsset{compat=newest}
+
+\definecolor{col_bg}{HTML}{FFFFFF} 
+\definecolor{col_txt}{HTML}{000000}
+\pagecolor{col_bg}
+\color{col_txt}
+
+\begin{document}
+
+\noindent
+\begin{minipage}[c]{0.5\linewidth}
+    \hbox{\includegraphics[height=1.8cm]{ΕΚΠΑ.png}}
+\end{minipage}%
+\begin{minipage}[c]{0.6\linewidth}
+    \begin{flushright}
+        \textbf{\large Τμήμα Πληροφορικής και} \\
+        \textbf{\large Τηλεπικοινωνιών}
+    \end{flushright}
+\end{minipage}
+\hspace*{0.2cm}
+
+\vspace*{0.6em}
+
+\rule{\linewidth}{0.3mm}
+
+\begin{center}
+    \textbf{\Large [Κ17] Υπολογιστική Θεωρία Μηχανικής Μάθησης} \\
+    \vspace*{0.2em}
+    \large Θεωρητικές Ασκήσεις
+\end{center}
+\vspace*{0.4em}
+
+\noindent
+\hspace*{0.4cm}{\large \textbf{Ονοματεπώνυμο:} Χολέβας Δημήτριος} \hfill {\large \textbf{Ακαδημαϊκό Έτος:} 2024-25}\hspace*{0.4cm}
+
+\vspace*{0.6em}
+\rule{\linewidth}{0.3mm}
+\vspace*{0.2em}
+
+\begin{center}
+    \textbf{\Large 7η Θεωρητική Άσκηση} \\
+    \vspace*{0.3em}
+    \textbf{\large (Κάτω Φράγμα για τον $Perceptron$)}
+\end{center}
+\vspace*{0.0em}
+
+\subsection*{Γεωμετρική Κατασκευή}
+
+Διαλέγουμε $m$ σημεία στον τρισδιάστατο χώρο $\mathbb{R}^3$ ώστε ο αλγόριθμος $Perceptron$ να κάνει $m$ διαδοχικά λάθη. Θέλουμε ταυτόχρονα να ικανοποιείται το θεωρητικό άνω φράγμα των λαθών που προκύπτει από την ανάλυση του αλγορίθμου στην περίπτωση γραμμικά διαχωρίσιμων δεδομένων:
+\[
+M \leq \frac{R^2 \cdot \|w^*\|^2}{\gamma^2}
+\]
+
+Ορίζουμε το διάνυσμα στόχου ως $w^* = (0, 0, 1)$, δηλαδή έναν κάθετο διαχωριστή προς τον άξονα $x_3$. Επιλέγουμε κάθε σημείο της μορφής $x_i = (a_i, b_i, y_i)$, με $y_i = (-1)^i$ και $a_i^2 + b_i^2 = m^2 - 1$. Επομένως, η ευκλείδεια νόρμα κάθε σημείου είναι:
+\[
+\|x_i\|^2 = a_i^2 + b_i^2 + y_i^2 = (m^2 - 1) + 1 = m^2
+\]
+Άρα το $R^2 = \max_i \|x_i\|^2 = m^2$.
+
+Για τον υπολογισμό του περιθωρίου $\gamma$, από τον ορισμό έχουμε:
+\[
+\gamma = \min_i \frac{y_i (w^* \cdot x_i)}{\|w^*\|} = \min_i \frac{y_i y_i}{1} = 1
+\]
+Συνεπώς, το θεωρητικό άνω φράγμα γίνεται:
+\[
+M \leq \frac{m^2 \cdot 1}{1} = m^2
+\]
+
+\subsection*{Ανάλυση Λαθών και Ενημέρωση Βαρών}
+
+Στόχος είναι να δημιουργήσουμε ακολουθία $m$ σημείων ώστε ο $Perceptron$ να κάνει ακριβώς $m$ λάθη, ξεκινώντας από αρχικό διάνυσμα $w^{(0)} = 0$. Σε κάθε βήμα, όταν γίνεται λάθος, ο αλγόριθμος ενημερώνει το διάνυσμα ως εξής:
+\[
+w^{(t+1)} = w^{(t)} + y_t x_t
+\]
+Άρα μετά από $t$ λάθη έχουμε:
+\[
+w^{(t)} = \sum_{j=1}^t y_j x_j
+\]
+Θέλουμε το $(t+1)$-οστό σημείο να εξακολουθεί να ταξινομείται λάθος, δηλαδή να ισχύει:
+\[
+y_{t+1} (w^{(t)} \cdot x_{t+1}) \leq 0
+\]
+
+Κατασκευάζουμε τα σημεία $x_i$ ως:
+\[
+x_i = (\cos \theta_i, \sin \theta_i, y_i), \quad \theta_i = \frac{2\pi i}{m}, \quad y_i = (-1)^i
+\]
+Τα πρώτα δύο στοιχεία τοποθετούν τα σημεία στον κύκλο μοναδιαίας ακτίνας στο επίπεδο $(x_1, x_2)$, ενώ το τρίτο στοιχείο ($y_i$) εναλλάσσει την τιμή του $x_3$ μεταξύ $+1$ και $-1$.
+
+Παρατηρούμε ότι κάθε σημείο $x_i$ έχει την ίδια νόρμα:
+\[
+\|x_i\|^2 = \cos^2 \theta_i + \sin^2 \theta_i + 1 = 1 + 1 = 2
+\]
+Κάθε σημείο $x_i$ ικανοποιεί:
+\[
+w^* \cdot x_i = y_i \Rightarrow y_i (w^* \cdot x_i) = 1 > 0
+\]
+Άρα υπάρχει γραμμικός διαχωριστής $w^*$ που ταξινομεί σωστά όλα τα σημεία.
+
+Ξεκινώντας από $w^{(0)} = 0$, έχουμε:
+\begin{align*}
+w^{(1)} &= y_1 x_1 \\
+w^{(2)} &= y_1 x_1 + y_2 x_2 \\
+\vdots \\
+w^{(t)} &= \sum_{j=1}^t y_j x_j
+\end{align*}
+
+Η εναλλαγή σημείων στον κύκλο και των ετικετών $y_i$ προκαλεί την αλληλοεξουδετέρωση των οριζόντιων συνιστωσών ($x_1, x_2$) των $x_i$, ενώ οι κάθετες ($x_3 = y_i$) εναλλάσσονται κι αυτές. Το αποτέλεσμα είναι ότι η προβολή $w^{(t)}$ στο $w^* = (0, 0, 1)$ παραμένει μικρή για τα πρώτα πολλά $t$, άρα οι προβλέψεις εξακολουθούν να είναι λάθος.
+
+Ο $Perceptron$ λοιπόν θα κάνει λάθος για κάθε ένα από τα $m$ σημεία, δηλαδή $M = m$. Από την άλλη, το άνω φράγμα δίνει $M \leq m^2$, άρα το κατασκευασμένο παράδειγμα ικανοποιεί πλήρως το θεωρητικό όριο.
+
+\subsection*{Προσέγγιση του Φράγματος}
+
+Παράλληλα, το άνω φράγμα για τον αριθμό λαθών του $Perceptron$ αποδεικνύεται με χρήση των παρακάτω ανισοτήτων:
+\begin{itemize}
+  \item $w^{(M)} \cdot w^* \geq M \gamma$
+  \item $\|w^{(M)}\|^2 \leq M R^2$
+\end{itemize}
+Αν αυτές καταλήγουν σε ισότητα, τότε το φράγμα $M = \frac{R^2 \cdot \|w^*\|^2}{\gamma^2}$ είναι ακριβές. Στην κατασκευή μας ισχύει:
+\begin{itemize}
+  \item Όλα τα $x_i$ έχουν ίδια νόρμα $R$.
+  \item Όλα τα $y_i (w^* \cdot x_i) = 1 = \gamma$.
+  \item Τα $y_i x_i$ δεν είναι συνευθειακά, άρα η τελική κατεύθυνση του $w^{(M)}$ δεν ταυτίζεται με $w^*$.
+\end{itemize}
+Επομένως παρατηρούμε πως το φράγμα προσεγγίζεται αλλά δεν επιτυγχάνεται ακριβώς με ισότητα.
+
+\subsection*{Συμπέρασμα}
+
+Με βάση τα παραπάνω, καταλήγουμε ότι η κατασκευή αυτή αποτελεί παράδειγμα όπου ο $Perceptron$ κάνει $m$ λάθη, ενώ υπάρχει γραμμικός διαχωριστής $w^*$ με περιθώριο $\gamma = 1$, και τα σημεία έχουν νόρμα $R = m$, οπότε το θεωρητικό φράγμα $m^2$ ικανοποιείται. Η περίπτωση δείχνει ότι το φράγμα μπορεί να προσεγγιστεί από κάτω και δεν είναι απλώς θεωρητικό όριο αλλά έχει πρακτική σημασία.
+
+\end{document}
