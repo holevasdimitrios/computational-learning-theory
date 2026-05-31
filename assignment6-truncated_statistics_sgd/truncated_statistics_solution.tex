@@ -1,0 +1,145 @@
+\documentclass[12pt]{article}
+
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{csquotes}
+\usepackage{enumitem}
+\usepackage{mathtools} 
+\usepackage[margin=2cm]{geometry}
+\usepackage[english,main=greek]{babel}
+\usepackage{epstopdf-base}
+\usepackage{grffile} 
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\pgfplotsset{compat=newest}
+
+\definecolor{col_bg}{HTML}{FFFFFF} 
+\definecolor{col_txt}{HTML}{000000}
+\pagecolor{col_bg}
+\color{col_txt}
+
+\begin{document}
+
+\noindent
+\begin{minipage}[c]{0.5\linewidth}
+    \hbox{\includegraphics[height=1.8cm]{ΕΚΠΑ.png}}
+\end{minipage}%
+\begin{minipage}[c]{0.6\linewidth}
+    \begin{flushright}
+        \textbf{\large Τμήμα Πληροφορικής και} \\
+        \textbf{\large Τηλεπικοινωνιών}
+    \end{flushright}
+\end{minipage}
+\hspace*{0.2cm}
+
+\vspace*{0.6em}
+
+\rule{\linewidth}{0.3mm}
+
+\begin{center}
+    \textbf{\Large [Κ17] Υπολογιστική Θεωρία Μηχανικής Μάθησης} \\
+    \vspace*{0.2em}
+    \large Θεωρητικές Ασκήσεις
+\end{center}
+\vspace*{0.4em}
+
+\noindent
+\hspace*{0.4cm}{\large \textbf{Ονοματεπώνυμο:} Χολέβας Δημήτριος} \hfill {\large \textbf{Ακαδημαϊκό Έτος:} 2024-25}\hspace*{0.4cm}
+
+\vspace*{0.6em}
+\rule{\linewidth}{0.3mm}
+\vspace*{0.2em}
+
+\begin{center}
+    \textbf{\Large 6η Θεωρητική Άσκηση} \\
+    \vspace*{0.3em}
+    \textbf{\large ($SGD$ για $Truncated\ Statistics$)}
+\end{center}
+\vspace*{0.0em}
+
+\subsection*{Εισαγωγή}
+
+Θεωρούμε κανονική κατανομή $N(\mu^*, 1)$ με άγνωστη μέση τιμή $\mu^*$ και γνωστή διακύμανση ίση με 1. Δεν έχουμε άμεση πρόσβαση σε δείγματα από αυτήν την κατανομή, αλλά παρατηρούμε μόνο δείγματα $x$ τέτοια ώστε $x \geq 0$. Δηλαδή, έχουμε πρόσβαση στην περιορισμένη κατανομή $N_{\geq 0}(\mu^*, 1)$. Επιπλέον, υποθέτουμε ότι υπάρχει εκ των προτέρων γνώση για την τιμή της παραμέτρου: $|\mu^*| \leq B$.
+
+\subsection*{Ορισμός της Συνάρτησης Κόστους}
+
+Θέλουμε να εκτιμήσουμε τη $\mu^*$ εφαρμόζοντας $SGD$ στη συνάρτηση κόστους:
+\[
+f(\mu) = \mathbb{E}_{x \sim N_{\geq 0}(\mu^*, 1)} \left[ -\log \left( \frac{e^{-\frac{1}{2}(x - \mu)^2}}{\int_0^\infty e^{-\frac{1}{2}(z - \mu)^2} dz} \right) \right]
+\]
+Αναλύουμε τον λογάριθμο και έχουμε:
+\[
+f(\mu) = \mathbb{E} \left[ \frac{1}{2}(x - \mu)^2 + \log \left( \int_0^\infty e^{-\frac{1}{2}(z - \mu)^2} dz \right) \right]
+\]
+Δηλαδή:
+\[
+f(\mu) = \frac{1}{2} \mathbb{E}_{x \sim N_{\geq 0}(\mu^*, 1)} [(x - \mu)^2] + \log Z(\mu),
+\quad \text{όπου } Z(\mu) = \int_0^\infty e^{-\frac{1}{2}(z - \mu)^2} dz
+\]
+
+Αυτή είναι η αρνητική $log-likelihood$ του μοντέλου με σεβασμό στη $\mu$, δεδομένων των περιορισμένων δειγμάτων.
+
+\subsection*{Κανονικοποίηση και Χρήση της $\Phi(\mu)$}
+
+Ορίζουμε $\phi(\mu) = \frac{1}{\sqrt{2\pi}} e^{-\mu^2/2}$ και $\Phi(\mu) = \Pr_{z \sim N(0,1)}[z \leq \mu]$ ($cdf$). Με αλλαγή μεταβλητής έχουμε:
+\[
+Z(\mu) = \int_0^\infty e^{-\frac{1}{2}(z - \mu)^2} dz = \sqrt{2\pi} \cdot \Phi(\mu)
+\]
+Άρα η τελική μορφή της $f(\mu)$ γίνεται:
+\[
+f(\mu) = \frac{1}{2} \mathbb{E}[(x - \mu)^2] + \log \Phi(\mu)
+\]
+
+\subsection*{Συμπεριφορά της $f(\mu)$ και Ιδιότητες}
+
+\begin{itemize}
+  \item Η $f(\mu)$ είναι \textbf{συνεχής} και \textbf{διαφορίσιμη} στο διάστημα $[-B, B]$, γιατί το τετράγωνο και η $\log\Phi(\mu)$ είναι και οι δύο $smooth$ συναρτήσεις.
+  \item Η $f(\mu)$ είναι επίσης \textbf{ισχυρά κυρτή} ($strongly\ convex$), επειδή το τετραγωνικό σφάλμα έχει κυρτότητα και το $\log \Phi(\mu)$ είναι κυρτή στο $(-\infty, 0]$ και αρκετά επίπεδη στο $[0, \infty)$. Για περιορισμένο διάστημα $[-B,B]$, αυτό αρκεί.
+  \item Το \textbf{μοναδικό ελάχιστο} σημαίνει ότι υπάρχει μία και μόνο τιμή $\mu^*$ για την οποία η $f(\mu)$ είναι ελάχιστη.
+  \item Όταν λέμε ότι η παράγωγος δεν αλλάζει απότομα, εννοούμε ότι η $f(\mu)$ είναι \textbf{$L-Lipschitz\ differentiable$}, δηλαδή: $\|\nabla f(\mu_1) - \nabla f(\mu_2)\| \leq L \cdot |\mu_1 - \mu_2|$. Αυτό σημαίνει ότι το σχήμα της δεν έχει αιχμές ή ασυνέχειες και επομένως η σύγκλιση με $SGD$ είναι εφικτή.
+\end{itemize}
+
+Η στοχαστική εκτίμηση της παραγώγου της $f(\mu)$ δίνεται από:
+\[
+g_t = \nabla_\mu \left( \frac{1}{2}(x_t - \mu)^2 + \log \Phi(\mu) \right) = (\mu - x_t) + \frac{\phi(\mu)}{\Phi(\mu)}
+\]
+Οπότε συνεχίζουμε ως εξής:
+\[
+\mu_{t+1} = \Pi_{[-B,B]}\left( \mu_t - \eta g_t \right)
+\]
+όπου $\Pi_{[-B,B]}$ είναι η \textbf{προβολή στο διάστημα} $[-B, B]$:
+\[
+\Pi_{[-B,B]}(x) = \min\{\max\{x, -B\}, B\}
+\]
+Αυτό εξασφαλίζει ότι πάντα θα ισχύει $\mu_t \in [-B,B]$, άρα σε κάθε βήμα παραμένουμε εντός του έγκυρου χώρου αναζήτησης.
+
+\subsection*{Ρυθμός Σύγκλισης και Αριθμός Επαναλήψεων}
+
+Σύμφωνα με τη θεωρία της στοχαστικής βαθμιδωτής καθόδου με προβολή, όταν η συνάρτηση είναι ισχυρά κυρτή, ισχύει: 
+\[
+\mathbb{E}[|\mu_T - \mu^*|] \leq \varepsilon \quad \text{αν } T = O\left( \frac{1}{\varepsilon^2} \right)
+\]
+όπου ο αριθμός επαναλήψεων (και άρα παρατηρήσεων $x_t$) που απαιτούνται είναι αντιστρόφως ανάλογος του τετράγωνου της ακρίβειας $\varepsilon$. Αυτό προκύπτει από την ανάλυση σύγκλισης στη στοχαστική βελτιστοποίηση, όταν οι βαθμίδες έχουν φραγμένη διακύμανση και ο χώρος των λύσεων είναι περιορισμένος.
+
+\subsection*{Συμπέρασμα}
+
+Με βάση όλα τα παραπάνω, διαπιστώνουμε τα εξής:
+\begin{itemize}
+  \item Η $f(\mu)$ είναι συνεχής, διαφορίσιμη και έχει μοναδικό ελάχιστο στο διάστημα $[-B,B]$.
+  \item Η παράγωγός της είναι $Lipschitz$, άρα επιτρέπει αποδοτική βελτιστοποίηση με $SGD$.
+  \item Η χρήση προβολής εξασφαλίζει ότι κάθε ενημέρωση παραμένει εντός του $[-B, B]$.
+  \item Συνεπώς, εφαρμόζοντας στοχαστική καθοδική κίνηση βαθμίδας ($SGD$) με κατάλληλο βήμα εκμάθησης και $T = O(1/\varepsilon^2)$ δείγματα από την $N_{\geq 0}(\mu^*, 1)$, μπορούμε να εκτιμήσουμε τη $\mu^*$ με προσέγγιση σφάλματος $\varepsilon$.
+\end{itemize}
+
+\end{document}
