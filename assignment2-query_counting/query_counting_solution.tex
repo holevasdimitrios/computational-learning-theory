@@ -1,0 +1,227 @@
+\documentclass[12pt]{article}
+
+% Χρήσιμα πακέτα
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{csquotes}
+\usepackage{enumitem}
+\usepackage{mathtools} 
+\usepackage[margin=2cm]{geometry}
+\usepackage[english,main=greek]{babel}
+\usepackage{epstopdf-base}
+\usepackage{grffile} 
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\pgfplotsset{compat=newest}
+
+\definecolor{col_bg}{HTML}{FFFFFF} 
+\definecolor{col_txt}{HTML}{000000}
+\pagecolor{col_bg}
+\color{col_txt}
+
+\begin{document}
+% =====================================================================
+% ΓΕΩΜΕΤΡΙΚΑ ΤΕΛΕΙΑ ΕΠΙΚΕΦΑΛΙΔΑ (ΑΠΟΛΥΤΗ ΕΥΘΥΓΡΑΜΜΙΣΗ)
+% =====================================================================
+\noindent
+\begin{minipage}[c]{0.5\linewidth}
+    % Αριστερά: Το επίσημο λογότυπο του ΕΚΠΑ
+    \hbox{\includegraphics[height=1.8cm]{ΕΚΠΑ.png}}
+\end{minipage}%
+\begin{minipage}[c]{0.6\linewidth}
+    % Δεξιά: Στοίχιση τέρμα δεξιά στο περιθώριο
+    \begin{flushright}
+        \textbf{\large Τμήμα Πληροφορικής και} \\
+        \textbf{\large Τηλεπικοινωνιών}
+    \end{flushright}
+\end{minipage}
+\hspace*{0.2cm}
+
+\vspace*{0.6em}
+
+\rule{\linewidth}{0.3mm} % Πρώτη οριζόντια γραμμή (Πάχος 0.3mm)
+
+\begin{center}
+    % Μάθημα και Γενικός Τίτλος
+    \textbf{\Large [Κ17] Υπολογιστική Θεωρία Μηχανικής Μάθησης} \\
+    \vspace*{0.2em}
+    \large Θεωρητικές Ασκήσεις
+\end{center}
+\vspace*{0.4em}
+
+\noindent
+\hspace*{0.4cm}{\large \textbf{Ονοματεπώνυμο:} Χολέβας Δημήτριος} \hfill {\large \textbf{Ακαδημαϊκό Έτος:} 2024-25}\hspace*{0.4cm}
+
+\vspace*{0.6em}
+\rule{\linewidth}{0.3mm} % Δεύτερη οριζόντια γραμμή (Πάχος 0.3mm - Ίδιο μέγεθος)
+\vspace*{0.2em}
+
+\begin{center}
+    \textbf{\Large 2η Θεωρητική Άσκηση} \\
+    \vspace*{0.3em}
+    \textbf{\large (Καταμέτρηση μέσω Ερωτημάτων)}
+\end{center}
+\vspace*{0.0em}
+\subsection*{Ερώτημα α}
+
+Με βάση την συμβουλή της εκφώνησης που μας δόθηκε, δημιουργούμε ένα τυχαίο υποσύνολο $Q \subseteq \{1, \dots, n\}$ έτσι ώστε κάθε στοιχείο $i$ να περιλαμβάνεται στο $Q$ με ανεξάρτητη πιθανότητα $1/k$. Ορίζουμε τον δείκτη:
+\[
+Z = \mathbb{I}[S \cap Q \neq \emptyset]
+\]
+όπου το $Z$ παίρνει τιμή 1 όταν υπάρχει τουλάχιστον ένα κοινό στοιχείο μεταξύ των $S$ και $Q$, και 0 διαφορετικά.
+Έστω ότι $|S| = s$. Τότε η πιθανότητα το υποσύνολο $Q$ να μην περιέχει κανένα στοιχείο του $S$ είναι:
+\[
+\Pr[Z = 0] = \left(1 - \frac{1}{k}\right)^s
+\quad \Rightarrow \quad
+\Pr[Z = 1] = 1 - \left(1 - \frac{1}{k}\right)^s
+\]
+Διακρίνουμε δύο βασικές περιπτώσεις, ανάλογα με τη σχέση του $s$ με το $k$:
+
+\vspace{0.5em}
+\noindent
+\textbf{Περίπτωση 1:} Αν $s \leq k$, τότε η πιθανότητα το $Q$ περιέχει τουλάχιστον ένα στοιχείο του $S$ και ισχύει το εξής:
+\begin{equation*}
+\Pr[Z = 1] \leq 1 - \left(1 - \frac{1}{k} \right)^k \leq 1 - \frac{1}{e}
+\end{equation*}
+
+\vspace{0.5em}
+\noindent
+\textbf{Περίπτωση 2:} Αν $s \geq (1 + \varepsilon)k$ , τότε το πλήθος των στοιχείων του $S$ είναι σημαντικά μεγαλύτερο, οπότε η πιθανότητα επιτυχίας αυξάνεται ως εξής:
+\begin{equation*}
+\Pr[Z = 1] \geq 1 - \left(1 - \frac{1}{k} \right)^{(1 + \varepsilon)k} \geq 1 - \frac{1}{e^{1+\varepsilon}}
+\end{equation*}
+
+\vspace{0.5em}
+\noindent
+Επομένως, υπάρχει σταθερή απόσταση ανάμεσα στις δύο πιθανότητες:
+\[
+c = \frac{1}{e^{1+\varepsilon}} - \frac{1}{e}
+\]
+Προκειμένου να διακρίνουμε αξιόπιστα τις δύο περιπτώσεις, επαναλαμβάνουμε τη διαδικασία $t$ φορές και ορίζουμε τον εμπειρικό μέσο:
+\[
+\hat{p} = \frac{1}{t} \sum_{i=1}^t Z_i
+\]
+Εφόσον τα $Z_i$ είναι ανεξάρτητα μεταξύ τους και ανήκουν στο διάστημα $[0,1]$, μπορούμε να εφαρμόσουμε την ανισότητα $Hoeffding$:
+\[
+\Pr\left[|\hat{p} - \mathbb{E}[Z]| \geq \alpha \right] \leq 2 e^{-2 t \alpha^2}
+\]
+Θέτουμε $\alpha = \frac{c}{2}$, με σκοπό να ξεχωρίσουμε με υψηλή βεβαιότητα τις δύο περιπτώσεις. Τότε, για δεδομένο σφάλμα $\delta$, απαιτούμε:
+\[
+2 e^{-2 t \alpha^2} \leq \delta \quad \Rightarrow \quad
+e^{-2 t \alpha^2} \leq \frac{\delta}{2} \quad \Rightarrow \quad
+-2 t \alpha^2 \leq \ln\left( \frac{\delta}{2} \right)
+\]
+Αντικαθιστούμε \(\alpha = \frac{c}{2}\) και έχουμε:
+\[
+t \geq \frac{1}{2 (c/2)^2} \ln\left( \frac{2}{\delta} \right)
+= \frac{2}{c^2} \ln\left( \frac{2}{\delta} \right)
+\]
+Επειδή $c = \Theta(\varepsilon)$, αυτό συνεπάγεται ότι ο αριθμός των απαιτούμενων επαναλήψεων θα είναι:
+\[
+t = O\left( \frac{1}{\varepsilon^2} \log \frac{1}{\delta} \right) = O\left( \frac{\log(1/\delta)}{\varepsilon^2} \right)
+\]
+
+\vspace{0.5em}
+\noindent
+\textbf{Συμπέρασμα:} Με βάση τα παραπάνω, παρατηρούμε πως μας αρκούν $O\left( \frac{\log(1/\delta)}{\varepsilon^2} \right)$ ερωτήματα ώστε, με πιθανότητα τουλάχιστον $1 - \delta$, να μπορούμε να ξεχωρίσουμε με αξιοπιστία αν ισχύει $|S| \leq k$ ή $|S| \geq (1 + \varepsilon)k$.
+
+
+\subsection*{Ερώτημα β}
+Προκειμένου να πετύχουμε το ζητούμενο σε αυτό το ερώτημα, αξιοποιούμε τα βήματα που αναλύσαμε στο προηγούμενο ερώτημα (α). Εκεί δείξαμε ότι με $O\left( \frac{\log(1/\delta)}{\varepsilon^2} \right)$ ερωτήματα μπορούμε, με πιθανότητα τουλάχιστον $1 - \delta$, να ελέγξουμε για κάθε δοσμένο $k$ αν ισχύει $|S| \leq k$ ή $|S| \geq (1 + \varepsilon)k$.
+Με βάση αυτά λοιπόν, εφαρμόζουμε δυαδική αναζήτηση στο διάστημα $[1, n]$ για να εντοπίσουμε το μικρότερο $k$ για το οποίο με βάση τα βήματα του ερωτήματος (α) ισχύει: $|S| \leq (1 + \varepsilon)k$.
+
+\vspace{0.5em}Η αναζήτηση γίνεται ως εξής:
+
+\begin{itemize}
+  \item Σε κάθε βήμα επιλέγουμε ένα $k$ στο τρέχον διάστημα και εφαρμόζουμε τη διαδικασία του (α) για να ελέγξουμε αν $|S| \leq k$ ή $|S| \geq (1 + \varepsilon)k$.
+  \item Αν το αποτέλεσμα δείχνει ότι $|S| \leq k$, μετακινούμε το δεξί άκρο της αναζήτησης προς τα αριστερά.
+  \item Αν το αποτέλεσμα δείχνει ότι $|S| \geq (1 + \varepsilon)k$, μετακινούμε το αριστερό άκρο της αναζήτησης προς τα δεξιά.
+\end{itemize}
+
+Η παραπάνω διαδικασία επαναλαμβάνεται μέχρι το διάστημα να περιοριστεί αρκετά ώστε να καταλήξουμε σε τιμή $\hat{s}$ τέτοια ώστε να ισχύει:
+\[
+\hat{s} \leq |S| \leq (1 + \varepsilon)\hat{s}
+\]
+
+Ο συνολικός αριθμός βημάτων της δυαδικής αναζήτησης είναι $O(\log n)$, αφού κάθε έλεγχος μειώνει το διάστημα στο μισό. Σε κάθε τέτοιο βήμα καλούμε τα βήματα του (α), όπου:
+\[
+O\left( \frac{1}{\varepsilon^2} \log \frac{1}{\delta} \right) = O\left( \frac{\log(1/\delta)}{\varepsilon^2} \right)
+\]
+ερωτήματα για επιτυχία με πιθανότητα τουλάχιστον $1 - \delta$
+
+\vspace{0.5em}
+Επομένως, ο συνολικός αριθμός ερωτημάτων είναι:
+\[
+O\left( \frac{1}{\varepsilon^2} \log n \cdot \log \frac{1}{\delta} \right)
+\]
+
+Αν θέλουμε η συνολική πιθανότητα αποτυχίας να είναι το πολύ $1/3$ (ώστε η συνολική πιθανότητα επιτυχίας να είναι τουλάχιστον $2/3$), αρκεί να θέσουμε $\delta = \frac{1}{3 \log n}$ ώστε να εφαρμόσουμε ένωση πιθανότητων για τα $O(\log n)$ βήματα
+
+\vspace{0.5em}
+Με βάση τα παραπάνω, έχουμε:
+\[
+\log \frac{1}{\delta} = \log(3 \log n) = O(\log \log n)
+\quad \Rightarrow \quad
+\text{συνολικά } O\left( \frac{1}{\varepsilon^2} \log n \cdot \log \log n \right) \text{ ερωτήματα.}
+\]
+\vspace{0.5em}
+\noindent
+\textbf{Συμπέρασμα:} Εν κατακλείδι, χρησιμοποιώντας δυαδική αναζήτηση με βάση τα βήματα του ερωτήματος (α), μπορούμε να υπολογίσουμε έναν εκτιμητή $\hat{s}$ για το πλήθος των στοιχείων του $S$, έτσι ώστε με πιθανότητα τουλάχιστον $2/3$ να ισχύει:
+\[
+\hat{s} \leq |S| \leq (1 + \varepsilon)\hat{s}
+\]
+με συνολικό αριθμό ερωτημάτων λογαριθμικό ως προς το $n$.
+
+
+\subsection*{Ερώτημα γ}
+
+Γνωρίζοντας ότι $|S| = s$, ακολουθούμε την παρακάτω στρατηγική, με βάση και τη συμβουλή της εκφώνησης:
+
+\begin{enumerate}
+    \item Δημιουργούμε τυχαία ένα υποσύνολο $Q \subseteq \{1, \dots, n\}$, στο οποίο κάθε στοιχείο $i$ περιλαμβάνεται με ανεξάρτητη πιθανότητα $1/s$.
+    
+    \item Ελέγχουμε αν το $Q$ περιέχει ακριβώς ένα στοιχείο από το $S$, δηλαδή αν $|S \cap Q| = 1$
+
+    \item Αν ισχύει αυτό, επιστρέφουμε το μοναδικό στοιχείο του $S \cap Q$ ως δείγμα. Διαφορετικά, επαναλαμβάνουμε τη διαδικασία με νέο τυχαίο $Q$.
+\end{enumerate}
+
+\vspace{0.5em}
+Η πιθανότητα το $Q$ να περιέχει ακριβώς ένα στοιχείο του $S$ είναι:
+
+\[
+\Pr[|S \cap Q| = 1] = s \cdot \frac{1}{s} \cdot \left(1 - \frac{1}{s} \right)^{s-1} = \left(1 - \frac{1}{s} \right)^{s-1} \geq \frac{1}{e}
+\]
+
+Άρα, με σταθερή πιθανότητα (τουλάχιστον $1/e$), το $Q$ περιέχει \emph{ακριβώς} ένα στοιχείο του $S$, και ο αναμενόμενος αριθμός επαναλήψεων μέχρι να συμβεί αυτό είναι $O(1)$.
+
+\vspace{0.5em}
+Για να εντοπίσουμε το μοναδικό στοιχείο του $S \cap Q$, όταν αυτό υπάρχει, εφαρμόζουμε \textbf{δυαδική αναζήτηση} στα στοιχεία του $Q$ ως εξής:
+
+\vspace{0.3em}
+\begin{itemize}
+  \item Χωρίζουμε το $Q$ σε δύο ίσα υποσύνολα $Q_1$ και $Q_2$.
+  \item Ρωτάμε αν $Q_1 \cap S \neq \emptyset$.
+  \item Αν ναι, συνεχίζουμε τη διαδικασία στο $Q_1$, αλλιώς στο $Q_2$.
+  \item Επαναλαμβάνουμε αναδρομικά μέχρι να εντοπίσουμε το στοιχείο.
+\end{itemize}
+
+\vspace{0.5em}
+Καθώς το μέγεθος του $Q$ είναι αναμενόμενα $O(1)$, η δυαδική αναζήτηση απαιτεί $O(\log n)$ ερωτήματα.
+
+\vspace{0.5em}
+\noindent
+\textbf{Συμπέρασμα:} Ο αναμενόμενος αριθμός ερωτημάτων για να κάνουμε δειγματοληψία ομοιόμορφα ένα τυχαίο στοιχείο από το $S$ είναι: $O(\log n)$
+
+
+\end{document}
