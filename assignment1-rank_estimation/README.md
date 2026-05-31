@@ -34,3 +34,4 @@ $$m = \mathcal{O}\left( \frac{n^2}{\varepsilon^2 k^2} \log \frac{1}{\delta} \rig
 ## Folder Contents
 * `rank_estimation_solution.tex`: Complete analytical mathematical proofs and step-by-step derivations written in LaTeX.
 * `rank_estimation_solution.pdf`: Compiled production-ready publication document.
+* `ΕΚΠΑ.png`: The official institutional logo of the National and Kapodistrian University of Athens, embedded dynamically into the document's header for formal academic branding.
