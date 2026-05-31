@@ -1,15 +1,10 @@
 \documentclass[12pt]{article}
 
-\newcommand{\en}{\selectlanguage{english}}
-\newcommand{\gr}{\selectlanguage{greek}}
-
-% Useful packages
 \usepackage{caption}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
-\usepackage{tabularray}
 \usepackage{listings}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
@@ -17,9 +12,12 @@
 \usepackage[T1]{fontenc}
 \usepackage{csquotes}
 \usepackage{enumitem}
-\usepackage{mathtools} % Για το \coloneqq, \DeclarePairedDelimiter, κ.λπ.
-\usepackage[a4paper,top=2cm,bottom=2cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{mathtools} 
+\usepackage[margin=2cm]{geometry}
 \usepackage[english,main=greek]{babel}
+\usepackage{epstopdf-base}
+\usepackage{grffile} 
+
 \usepackage[dvipsnames]{xcolor}
 \usepackage{pgfplots}
 \usepackage{tikz}
@@ -33,31 +31,39 @@
 
 
 \begin{document}
+\noindent
+\begin{minipage}[c]{0.5\linewidth}
+    \hbox{\includegraphics[height=1.8cm]{ΕΚΠΑ.png}}
+\end{minipage}
+\begin{minipage}[c]{0.6\linewidth}
+    \begin{flushright}
+        \textbf{\large Τμήμα Πληροφορικής και} \\
+        \textbf{\large Τηλεπικοινωνιών}
+    \end{flushright}
+\end{minipage}
+\hspace*{0.0cm}
 
-\begin{table}[ht]
-    \begin{tblr}{
-      @{}X[l,valign=b]X[c,valign=b]X[r,valign=b]@{}
-    }
+\vspace*{0.6em}
+\rule{\linewidth}{0.3mm} 
 
-        % First line, course info
-        \hline
-        \SetCell[c=2]{l}{Υπολογιστική Θεωρία Μηχανικής μάθησης} & & {2024-25} \\ 
-        \hline
-        {} & {} & {} \\
+\begin{center}
+    \textbf{\Large [Κ17] Υπολογιστική Θεωρία Μηχανικής Μάθησης} \\
+    \vspace*{0.2em}
+    \large Θεωρητικές Ασκήσεις
+\end{center}
+\vspace*{0.4em}
 
-        % Title
-        \SetCell[c=3]{c}{ \Large \textbf{Θεωρητικές ασκήσεις} } \\
-        {} & {} & {} \\
-        
-        % Name Surname, RN
-        \hline
-        \SetCell[c=3]{c}{\textbf{Χολέβας Δημήτριος}} \\
-        \hline
-    \end{tblr}
-\end{table}
+\noindent
+\hspace*{0.4cm}{\large \textbf{Ονοματεπώνυμο:} Χολέβας Δημήτριος} \hfill {\large \textbf{Ακαδημαϊκό Έτος:} 2024-25}\hspace*{0.4cm}
 
+\rule{\linewidth}{0.3mm}
 
-\section*{1η Θεωρητική άσκηση (Εκτίμηση Κατάταξης)}
+\begin{center}
+    \textbf{\Large 1η Θεωρητική Άσκηση} \\
+    \vspace*{0.3em}
+    \textbf{\large (Εκτίμηση Κατάταξης)}
+\end{center}
+\vspace*{0.7em}
 
 Αρχικά, αυτό που έχουμε να κάνουμε είναι να ορίσουμε $\text{$rank$}(x)$ ως τη θέση του $x$ στη φθίνουσα ταξινόμηση της λίστας. Στην ουσία θα ισχύει πως το μέγιστο στοιχείο έχει $rank$ $1$, το δεύτερο μέγιστο $rank$ $2$, κ.ο.κ. Ακολουθούμε τα παρακάτω βήματα:
 
