@@ -1,0 +1,170 @@
+\documentclass[12pt]{article}
+
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{csquotes}
+\usepackage{enumitem}
+\usepackage{mathtools} 
+\usepackage[margin=2cm]{geometry}
+\usepackage[english,main=greek]{babel}
+\usepackage{epstopdf-base}
+\usepackage{grffile} 
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\pgfplotsset{compat=newest}
+
+\definecolor{col_bg}{HTML}{FFFFFF} 
+\definecolor{col_txt}{HTML}{000000}
+\pagecolor{col_bg}
+\color{col_txt}
+
+\begin{document}
+
+\noindent
+\begin{minipage}[c]{0.5\linewidth}
+    \hbox{\includegraphics[height=1.8cm]{ΕΚΠΑ.png}}
+\end{minipage}%
+\begin{minipage}[c]{0.6\linewidth}
+    \begin{flushright}
+        \textbf{\large Τμήμα Πληροφορικής και} \\
+        \textbf{\large Τηλεπικοινωνιών}
+    \end{flushright}
+\end{minipage}
+\hspace*{0.2cm}
+
+\vspace*{0.6em}
+
+\rule{\linewidth}{0.3mm}
+
+\begin{center}
+    \textbf{\Large [Κ17] Υπολογιστική Θεωρία Μηχανικής Μάθησης} \\
+    \vspace*{0.2em}
+    \large Θεωρητικές Ασκήσεις
+\end{center}
+\vspace*{0.4em}
+
+\noindent
+\hspace*{0.4cm}{\large \textbf{Ονοματεπώνυμο:} Χολέβας Δημήτριος} \hfill {\large \textbf{Ακαδημαϊκό Έτος:} 2024-25}\hspace*{0.4cm}
+
+\vspace*{0.6em}
+\rule{\linewidth}{0.3mm}
+\vspace*{0.2em}
+
+\begin{center}
+    \textbf{\Large 3η Θεωρητική Άσκηση} \\
+    \vspace*{0.3em}
+    \textbf{\large (Απόσταση $Kolmogorov$)}
+\end{center}
+\vspace*{0.0em}
+
+\subsection*{Ερώτημα α}
+
+Στόχος μας σε αυτό το ερώτημα είναι να κατασκευάσουμε έναν εκτιμητή $\hat{p}$ της άγνωστης κατανομής $p$, ώστε με πιθανότητα τουλάχιστον $1 - \delta$ να ισχύει:
+\[
+d_K(\hat{p}, p) \leq \varepsilon
+\]
+
+Για τον σκοπό αυτό, ακολουθούμε τα εξής βήματα:
+
+\begin{enumerate}
+  \item Παίρνουμε $m$ ανεξάρτητα δείγματα $X_1, X_2, \dots, X_m$ από την κατανομή $p$.
+  \item Για κάθε $i \in [n]$, ορίζουμε την εμπειρική συνάρτηση κατανομής ως:
+  \[
+  \hat{F}_p(i) = \frac{1}{m} \sum_{j = 1}^m \mathbb{I}[X_j \leq i]
+  \]
+  \item Ορίζουμε $\hat{p}(i) = \hat{F}_p(i) - \hat{F}_p(i - 1)$, με $\hat{F}_p(0) = 0$.
+\end{enumerate}
+
+Για να δείξουμε ότι αυτός ο εκτιμητής ικανοποιεί το ζητούμενο, εφαρμόζουμε την \textbf{Ανισότητα $Dvoretzky-Kiefer-Wolfowitz$ ($DKW$)}:
+\[
+\Pr\left[ \sup_{i} |\hat{F}_p(i) - F_p(i)| > \varepsilon \right] \leq 2 e^{-2m \varepsilon^2}
+\]
+
+Θέλουμε η πιθανότητα να είναι μικρότερη ή ίση με $\delta$, άρα μας αρκεί:
+\[
+2 e^{-2m \varepsilon^2} \leq \delta \quad \Rightarrow \quad m \geq \frac{1}{2 \varepsilon^2} \log \left( \frac{2}{\delta} \right)
+\]
+
+\textbf{Συμπέρασμα:} Με $O\left( \frac{\log(1/\delta)}{\varepsilon^2} \right)$ δείγματα μπορούμε, με πιθανότητα τουλάχιστον $1 - \delta$, να προσεγγίσουμε την κατανομή $p$ σε απόσταση $Kolmogorov$ το πολύ $\varepsilon$. Η εκτίμησή μας βέβαια δεν εξαρτάται από το πλήθος $n$ των τιμών που μπορεί να πάρει η κατανομή, αφού η απόσταση $Kolmogorov$ εξαρτάται μόνο από το μέγιστο της διαφοράς των $CDFs$ και όχι από το $n$.
+
+\vspace{1em}
+
+\subsection*{Ερώτημα β}
+
+Σκοπός μας είναι να δείξουμε ότι οποιοσδήποτε αλγόριθμος που εκτιμά μια κατανομή $p$ σε απόσταση $Kolmogorov$ τουλάχιστον $\varepsilon$, με πιθανότητα τουλάχιστον $1 - \delta$, απαιτεί τουλάχιστον:
+\[
+\Omega\left( \frac{1}{\varepsilon^2} \log \frac{1}{\delta} \right) = \Omega\left( \frac{\log(1/\delta)}{\varepsilon^2} \right) \text{ δείγματα.}
+\]
+Για να αποδείξουμε αυτό το κατώτερο όριο, μπορούμε να βασιστούμε σε θεμελιώδη εργαλεία της στατιστικής μάθησης και πληροφορίας:
+\begin{itemize}
+    \item Το \textbf{Θεώρημα $Le$ $Cam$}, το οποίο συγκρίνει δύο υποθέσεις $H_0, H_1$ που αντιστοιχούν σε δύο κατανομές $p$ και $q$ με απόσταση $Kolmogorov$ τουλάχιστον $\varepsilon$, και παρέχει κάτω φράγμα στο σφάλμα κάθε στατιστικού ελέγχου μεταξύ τους με βάση τη συνολική μεταβολή ($total$ $variation$).
+    \item Την \textbf{Ανισότητα $Fano$}, η οποία συσχετίζει το ελάχιστο σφάλμα ενός ταξινομητή ανάμεσα σε πολλές πιθανές κατανομές με τη μεταξύ τους απόσταση (σε $KL$ ή $TV$) και την απαιτούμενη πληροφορία (εντροπία).
+\end{itemize}
+Ειδικότερα, θεωρούμε μια οικογένεια από $N$ κατάλληλα κατασκευασμένες διακριτές κατανομές $\{p_1, \dots, p_N\}$ στο $[n]$ με τις εξής ιδιότητες:\\
+- Για κάθε $i \neq j$, ισχύει $d_K(p_i, p_j) \geq \varepsilon$ \\
+- Η σχετική εντροπία $D_{KL}(p_i \| p_j)$ είναι μικρή, ώστε να μην είναι εύκολα διακριτές\\
+Η εφαρμογή της Ανισότητας $Fano$ μάς οδηγεί στο εξής κατώτερο όριο για τον αριθμό δειγμάτων $m$ που απαιτούνται ώστε να διακρίνουμε με πιθανότητα τουλάχιστον $1 - \delta$ μεταξύ αυτών των κατανομών:
+\[
+m \geq \Omega\left( \frac{1}{\varepsilon^2} \log \frac{1}{\delta} \right) = \Omega\left( \frac{\log(1/\delta)}{\varepsilon^2} \right)
+\]
+Εναλλακτικά, μπορούμε να εφαρμόσουν το Θεώρημα $Le$ $Cam$ για να συγκρίνουμε δύο διακριτές κατανομές $p$ και $q$ με $d_K(p, q) \geq \varepsilon$ και να δείξουμε ότι για να μειωθεί το σφάλμα διάκρισης κάτω από $\delta$, απαιτούνται τουλάχιστον $\Omega\left( \frac{1}{\varepsilon^2} \log \frac{1}{\delta} \right) = \Omega\left( \frac{\log(1/\delta)}{\varepsilon^2} \right)$ δείγματα.
+
+\vspace{0.5em}
+\noindent
+\textbf{Συμπέρασμα:} Το κατώτερο όριο αυτό επιβεβαιώνει ότι κάθε αλγόριθμος που επιτυγχάνει $Kolmogorov$ σφάλμα $\varepsilon$ με πιθανότητα τουλάχιστον $1 - \delta$, απαιτεί κατ’ ελάχιστον:
+\[
+\Omega\left( \frac{\log(1/\delta)}{\varepsilon^2} \right)
+\]
+δείγματα. Συνεπώς, η προσέγγιση του ερωτήματος (α) είναι \textit{βέλτιστη κατά τάξη μεγέθους}.
+
+\subsection*{Ερώτημα γ}
+
+Σε αυτό το ερώτημα γνωρίζουμε ότι η συνάρτηση μάζας πιθανοτήτων $p : [n] \rightarrow [0,1]$ είναι \textbf{μη αύξουσα}, δηλαδή για κάθε $i \in [n-1]$ ισχύει $p(i) \geq p(i+1)$. Στόχος μας είναι να διακρίνουν με πιθανότητα τουλάχιστον $1 - \delta$ αν η $p$ είναι \textbf{ομοιόμορφη} ($p = U_n$) ή αν απέχει τουλάχιστον $\varepsilon$ από την ομοιόμορφη ως προς την απόσταση \textbf{ολικής μεταβολής} ($d_{TV}(p, U_n) \geq \varepsilon$).
+Η απόσταση ολικής μεταβολής μεταξύ δύο κατανομών $p$ και $q$ δίνεται από:
+\[
+d_{TV}(p, q) = \frac{1}{2} \sum_{i=1}^n |p(i) - q(i)|
+\]
+Αξιοποιώντας το γεγονός ότι η $p$ είναι μη αύξουσα, παρατηρούμε ότι αν διαφέρει από την ομοιόμορφη κατανομή, τότε είναι πολύ πιθανό η διαφορά να εντοπίζεται στα άκρα του διαστήματος: συγκεκριμένα, θα περιμένουμε $p(1) > \frac{1}{n}$ and $p(n) < \frac{1}{n}$. Αυτό μας επιτρέπει να βασιστούμε μόνο στις εκτιμήσεις αυτών των δύο σημείων.
+
+\vspace{0.5em}
+Ακολουθούμε τα παρακάτω βήματα:
+
+\begin{enumerate}
+  \item Παίρνουμε $m$ ανεξάρτητα δείγματα από την κατανομή $p$.
+  \item Εκτιμούμε τις τιμές των $p(1)$ και $p(n)$ ως ποσοστά συχνοτήτων στο δείγμα:
+  \[
+  \hat{p}(1) = \frac{\text{\# φορών που είδαμε } 1}{m}, \quad \hat{p}(n) = \frac{\text{\# φορών που είδαμε } n}{m}
+  \]
+  \item Υπολογίζουμε το άθροισμα των αποκλίσεων από την ομοιόμορφη:
+  \[
+  T = \left| \hat{p}(1) - \frac{1}{n} \right| + \left| \hat{p}(n) - \frac{1}{n} \right|
+  \]
+  \item Αν $T \geq \varepsilon$, απορρίπτουμε την υπόθεση ότι $p = U_n$. Διαφορετικά, αποδεχόμαστε ότι η κατανομή είναι (σχεδόν) ομοιόμορφη.
+\end{enumerate}
+
+\vspace{0.5em}
+Για να διασφαλίσουμε ότι οι εμπειρικές τιμές $\hat{p}(1)$ and $\hat{p}(n)$ είναι αρκετά κοντά στις πραγματικές τιμές με υψηλή πιθανότητα, εφαρμόζουμε την \textbf{ανισότητα του $Hoeffding$}:
+\[
+\Pr\left[ |\hat{p}(i) - p(i)| \geq \varepsilon \right] \leq 2 e^{-2m\varepsilon^2}
+\]
+Θέλουμε αυτή η πιθανότητα να είναι το πολύ $\delta/2$ για καθένα από τα $i = 1, n$, ώστε συνολικά η πιθανότητα λάθους να είναι μικρότερη από $\delta$.
+Άρα, αρκεί να επιλέξουμε:
+\[
+m = O\left( \frac{\log(1/\delta)}{\varepsilon^2} \right)
+\]
+
+\vspace{0.5em}
+\noindent\textbf{Συμπέρασμα:} Με βάση τη μονοτονία της $p$, μπορούμε να διακρίνουμε τις δύο περιπτώσεις με πιθανότητα τουλάχιστον $1 - \delta$ χρησιμοποιώντας μόνο $O\left( \frac{\log(1/\delta)}{\varepsilon^2} \right)$ δείγματα. Η πολυπλοκότητα αυτή είναι βέλτιστη με βάση τα δείγματα όπως δείξαμε και στα προηγούμενα ερωτήματα.
+
+\end{document}
